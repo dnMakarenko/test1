@@ -50,25 +50,28 @@ namespace Currency.Services
         {
             try
             {
-                var results = new List<CurrencyCalculation>();
-
+                var maximumProfitResult = new CurrencyCalculation();
+                int maximumProfit = 0;
                 for (int first = 0; first < array.Length - 1; first++)
                 {
                     for (int second = first + 1; second < array.Length; second++)
                     {
-                        results.Add(new CurrencyCalculation
+                        int profit = array[second] - array[first];
+                        if (profit > maximumProfit)
                         {
-                            BuyPrice = array[first],
-                            SellPrice = array[second],
-                            BuyIdx = first + 1,
-                            SellIdx = second + 1
-                        });
+                            maximumProfit = profit;
+                            maximumProfitResult = new CurrencyCalculation
+                            {
+                                BuyPrice = array[first],
+                                SellPrice = array[second],
+                                BuyIdx = first + 1,
+                                SellIdx = second + 1
+                            };
+                        }
                     }
                 }
 
-                int maximumProfit = results.Select(q => q.Profit).Max();
-
-                return results.FirstOrDefault(q => q.Profit == maximumProfit);
+                return maximumProfitResult;
             }
             ///........
             ///........
